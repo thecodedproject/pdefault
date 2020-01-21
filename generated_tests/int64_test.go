@@ -28,12 +28,12 @@ func Test_Int64_InitalisesFieldWhenNotSet(t *testing.T) {
 func Test_Int64_InitalisesMultipleFieldWhenNotSet(t *testing.T) {
 	type TestStruct struct {
 		Field1 *int64 `pdefault:"10"`
-		Field2 *int64 `pdefault:"20"`
+		Field2 *int64 `pdefault:"-20"`
 	}
 
 	input := TestStruct{}
 	val1 := int64(10)
-	val2 := int64(20)
+	val2 := int64(-20)
 	expected := TestStruct{
 		Field1: &val1,
 		Field2: &val2,
@@ -47,7 +47,7 @@ func Test_Int64_InitalisesMultipleFieldWhenNotSet(t *testing.T) {
 func Test_Int64_InitalisesMultipleFieldWhenAllAreSet(t *testing.T) {
 	type TestStruct struct {
 		Field1 *int64 `pdefault:"10"`
-		Field2 *int64 `pdefault:"20"`
+		Field2 *int64 `pdefault:"-20"`
 	}
 
 	val1 := int64(30)
@@ -69,14 +69,14 @@ func Test_Int64_InitalisesMultipleFieldWhenAllAreSet(t *testing.T) {
 func Test_Int64_InitalisesMultipleFieldWhenSomeAreSet(t *testing.T) {
 	type TestStruct struct {
 		Field1 *int64 `pdefault:"10"`
-		Field2 *int64 `pdefault:"20"`
+		Field2 *int64 `pdefault:"-20"`
 	}
 
 	val1 := int64(30)
 	input := TestStruct{
 		Field1: &val1,
 	}
-	val2 := int64(20)
+	val2 := int64(-20)
 	expected := TestStruct{
 		Field1: &val1,
 		Field2: &val2,

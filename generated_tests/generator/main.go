@@ -27,8 +27,8 @@ var testCases = []struct{
 		Type: "int64",
 		TagValue1: "10",
 		Literal1: "int64(10)",
-		TagValue2: "20",
-		Literal2: "int64(20)",
+		TagValue2: "-20",
+		Literal2: "int64(-20)",
 		Literal3: "int64(30)",
 	},
 	{
