@@ -23,15 +23,6 @@ var testCases = []struct{
 	Literal3 string // Literal value not equal to TagValues 1 or 2 - e.g. int64(30)
 }{
 	{
-		Name: "Int64",
-		Type: "int64",
-		TagValue1: "10",
-		Literal1: "int64(10)",
-		TagValue2: "-20",
-		Literal2: "int64(-20)",
-		Literal3: "int64(30)",
-	},
-	{
 		Name: "Float64",
 		Type: "float64",
 		TagValue1: "1.1",
@@ -41,6 +32,15 @@ var testCases = []struct{
 		Literal3: "float64(3.3)",
 	},
 	{
+		Name: "Int64",
+		Type: "int64",
+		TagValue1: "10",
+		Literal1: "int64(10)",
+		TagValue2: "-20",
+		Literal2: "int64(-20)",
+		Literal3: "int64(30)",
+	},
+	{
 		Name: "String",
 		Type: "string",
 		TagValue1: "hello",
@@ -48,6 +48,51 @@ var testCases = []struct{
 		TagValue2: "world",
 		Literal2: "\"world\"",
 		Literal3: "\"some\"",
+	},
+	{
+		Name: "Uint",
+		Type: "uint",
+		TagValue1: "10",
+		Literal1: "uint(10)",
+		TagValue2: "20",
+		Literal2: "uint(20)",
+		Literal3: "uint(30)",
+	},
+	{
+		Name: "Uint8",
+		Type: "uint8",
+		TagValue1: "10",
+		Literal1: "uint8(10)",
+		TagValue2: "20",
+		Literal2: "uint8(20)",
+		Literal3: "uint8(30)",
+	},
+	{
+		Name: "Uint16",
+		Type: "uint16",
+		TagValue1: "10",
+		Literal1: "uint16(10)",
+		TagValue2: "20",
+		Literal2: "uint16(20)",
+		Literal3: "uint16(30)",
+	},
+	{
+		Name: "Uint32",
+		Type: "uint32",
+		TagValue1: "10",
+		Literal1: "uint32(10)",
+		TagValue2: "20",
+		Literal2: "uint32(20)",
+		Literal3: "uint32(30)",
+	},
+	{
+		Name: "Uint64",
+		Type: "uint64",
+		TagValue1: "10",
+		Literal1: "uint64(10)",
+		TagValue2: "20",
+		Literal2: "uint64(20)",
+		Literal3: "uint64(30)",
 	},
 }
 

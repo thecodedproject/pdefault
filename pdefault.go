@@ -8,16 +8,41 @@ import (
 )
 
 var conversions = map[reflect.Kind]func(string) (reflect.Value, error){
-	reflect.Int64: func(v string) (reflect.Value, error) {
-		val, err := strconv.ParseInt(v, 10, 64)
-		return reflect.ValueOf(&val), err
-	},
 	reflect.Float64: func(v string) (reflect.Value, error) {
 		val, err := strconv.ParseFloat(v, 64)
 		return reflect.ValueOf(&val), err
 	},
+	reflect.Int64: func(v string) (reflect.Value, error) {
+		val, err := strconv.ParseInt(v, 10, 64)
+		return reflect.ValueOf(&val), err
+	},
 	reflect.String: func(v string) (reflect.Value, error) {
 		return reflect.ValueOf(&v), nil
+	},
+	reflect.Uint: func(v string) (reflect.Value, error) {
+		val64, err := strconv.ParseUint(v, 10, 64)
+		// TODO check for overflow in case of running on 32-bit system
+		val := uint(val64)
+		return reflect.ValueOf(&val), err
+	},
+	reflect.Uint8: func(v string) (reflect.Value, error) {
+		val64, err := strconv.ParseUint(v, 10, 8)
+		val := uint8(val64)
+		return reflect.ValueOf(&val), err
+	},
+	reflect.Uint16: func(v string) (reflect.Value, error) {
+		val64, err := strconv.ParseUint(v, 10, 16)
+		val := uint16(val64)
+		return reflect.ValueOf(&val), err
+	},
+	reflect.Uint32: func(v string) (reflect.Value, error) {
+		val64, err := strconv.ParseUint(v, 10, 32)
+		val := uint32(val64)
+		return reflect.ValueOf(&val), err
+	},
+	reflect.Uint64: func(v string) (reflect.Value, error) {
+		val, err := strconv.ParseUint(v, 10, 64)
+		return reflect.ValueOf(&val), err
 	},
 }
 
