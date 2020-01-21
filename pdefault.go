@@ -16,6 +16,9 @@ var conversions = map[reflect.Kind]func(string) (reflect.Value, error){
 		val, err := strconv.ParseFloat(v, 64)
 		return reflect.ValueOf(&val), err
 	},
+	reflect.String: func(v string) (reflect.Value, error) {
+		return reflect.ValueOf(&v), nil
+	},
 }
 
 func Init(s interface{}) {

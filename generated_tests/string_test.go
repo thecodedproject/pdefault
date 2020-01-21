@@ -9,13 +9,13 @@ import (
 	"testing"
 )
 
-func Test_Int64_InitalisesFieldWhenNotSet(t *testing.T) {
+func Test_String_InitalisesFieldWhenNotSet(t *testing.T) {
 	type TestStruct struct {
-		Field *int64 `pdefault:"10"`
+		Field *string `pdefault:"hello"`
 	}
 
 	input := TestStruct{}
-	val := int64(10)
+	val := "hello"
 	expected := TestStruct{
 		Field: &val,
 	}
@@ -25,15 +25,15 @@ func Test_Int64_InitalisesFieldWhenNotSet(t *testing.T) {
 	assert.Equal(t, expected, input)
 }
 
-func Test_Int64_InitalisesMultipleFieldWhenNotSet(t *testing.T) {
+func Test_String_InitalisesMultipleFieldWhenNotSet(t *testing.T) {
 	type TestStruct struct {
-		Field1 *int64 `pdefault:"10"`
-		Field2 *int64 `pdefault:"20"`
+		Field1 *string `pdefault:"hello"`
+		Field2 *string `pdefault:"world"`
 	}
 
 	input := TestStruct{}
-	val1 := int64(10)
-	val2 := int64(20)
+	val1 := "hello"
+	val2 := "world"
 	expected := TestStruct{
 		Field1: &val1,
 		Field2: &val2,
@@ -44,14 +44,14 @@ func Test_Int64_InitalisesMultipleFieldWhenNotSet(t *testing.T) {
 	assert.Equal(t, expected, input)
 }
 
-func Test_Int64_InitalisesMultipleFieldWhenAllAreSet(t *testing.T) {
+func Test_String_InitalisesMultipleFieldWhenAllAreSet(t *testing.T) {
 	type TestStruct struct {
-		Field1 *int64 `pdefault:"10"`
-		Field2 *int64 `pdefault:"20"`
+		Field1 *string `pdefault:"hello"`
+		Field2 *string `pdefault:"world"`
 	}
 
-	val1 := int64(30)
-	val2 := int64(30)
+	val1 := "some"
+	val2 := "some"
 	input := TestStruct{
 		Field1: &val1,
 		Field2: &val2,
@@ -66,17 +66,17 @@ func Test_Int64_InitalisesMultipleFieldWhenAllAreSet(t *testing.T) {
 	assert.Equal(t, expected, input)
 }
 
-func Test_Int64_InitalisesMultipleFieldWhenSomeAreSet(t *testing.T) {
+func Test_String_InitalisesMultipleFieldWhenSomeAreSet(t *testing.T) {
 	type TestStruct struct {
-		Field1 *int64 `pdefault:"10"`
-		Field2 *int64 `pdefault:"20"`
+		Field1 *string `pdefault:"hello"`
+		Field2 *string `pdefault:"world"`
 	}
 
-	val1 := int64(30)
+	val1 := "some"
 	input := TestStruct{
 		Field1: &val1,
 	}
-	val2 := int64(20)
+	val2 := "world"
 	expected := TestStruct{
 		Field1: &val1,
 		Field2: &val2,
@@ -87,9 +87,9 @@ func Test_Int64_InitalisesMultipleFieldWhenSomeAreSet(t *testing.T) {
 	assert.Equal(t, expected, input)
 }
 
-func Test_Int64_NonPointerFieldsWithoutPdefaultAreIgnored(t *testing.T) {
+func Test_String_NonPointerFieldsWithoutPdefaultAreIgnored(t *testing.T) {
 	type TestStruct struct {
-		Field1 *int64 `pdefault:"10"`
+		Field1 *string `pdefault:"hello"`
 		NonPointerField float64
 	}
 
@@ -97,7 +97,7 @@ func Test_Int64_NonPointerFieldsWithoutPdefaultAreIgnored(t *testing.T) {
 		NonPointerField: 1.0,
 	}
 
-	val := int64(10)
+	val := "hello"
 	expected := TestStruct{
 		Field1: &val,
 		NonPointerField: 1.0,
@@ -108,13 +108,13 @@ func Test_Int64_NonPointerFieldsWithoutPdefaultAreIgnored(t *testing.T) {
 	assert.Equal(t, expected, input)
 }
 
-func Test_Int64_WhenDefaultNotConvertibleToIntPanicsWhenFieldNil(t *testing.T) {
+func Test_String_WhenDefaultNotConvertibleToIntPanicsWhenFieldNil(t *testing.T) {
 
 	// Do not perform this test on strings since a tag will always be convertable
 	// to a string type.
-	if reflect.TypeOf(int64(10)).Kind() != reflect.String {
+	if reflect.TypeOf("hello").Kind() != reflect.String {
 		type TestStruct struct {
-			Field1 *int64 `pdefault:"someString"`
+			Field1 *string `pdefault:"someString"`
 		}
 
 		input := TestStruct{
@@ -122,7 +122,7 @@ func Test_Int64_WhenDefaultNotConvertibleToIntPanicsWhenFieldNil(t *testing.T) {
 
 		defer func() {
 			if panicErr := recover(); panicErr != nil {
-				assert.Regexp(t, "(.*someString)(.*int64)(.*Field1)", panicErr, "Error should contain the field name")
+				assert.Regexp(t, "(.*someString)(.*string)(.*Field1)", panicErr, "Error should contain the field name")
 			} else {
 				assert.Fail(t, "Did not panic")
 			}
@@ -132,23 +132,23 @@ func Test_Int64_WhenDefaultNotConvertibleToIntPanicsWhenFieldNil(t *testing.T) {
 	}
 }
 
-func Test_Int64_WhenDefaultNotConvertibleToIntPanicsWhenFieldNotNil(t *testing.T) {
+func Test_String_WhenDefaultNotConvertibleToIntPanicsWhenFieldNotNil(t *testing.T) {
 
 	// Do not perform this test on strings since a tag will always be convertable
 	// to a string type.
-	if reflect.TypeOf(int64(10)).Kind() != reflect.String {
+	if reflect.TypeOf("hello").Kind() != reflect.String {
 		type TestStruct struct {
-			Field1 *int64 `pdefault:"hello"`
+			Field1 *string `pdefault:"hello"`
 		}
 
-		val := int64(10)
+		val := "hello"
 		input := TestStruct{
 			Field1: &val,
 		}
 
 		defer func() {
 			if panicErr := recover(); panicErr != nil {
-				assert.Regexp(t, "(.*hello)(.*int64)(.*Field1)", panicErr, "Error should contain the field name")
+				assert.Regexp(t, "(.*hello)(.*string)(.*Field1)", panicErr, "Error should contain the field name")
 			} else {
 				assert.Fail(t, "Did not panic")
 			}
@@ -158,10 +158,10 @@ func Test_Int64_WhenDefaultNotConvertibleToIntPanicsWhenFieldNotNil(t *testing.T
 	}
 }
 
-func Test_Int64_PdefaultTagOnNotPointerFieldPanics(t *testing.T) {
+func Test_String_PdefaultTagOnNotPointerFieldPanics(t *testing.T) {
 
 	type TestStruct struct {
-		NonPointerField int64 `pdefault:"10"`
+		NonPointerField string `pdefault:"hello"`
 	}
 
 	input := TestStruct{
