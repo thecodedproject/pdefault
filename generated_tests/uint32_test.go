@@ -177,3 +177,27 @@ func Test_Uint32_PdefaultTagOnNotPointerFieldPanics(t *testing.T) {
 
 	pdefault.Init(&input)
 }
+
+func Test_Uint32_PanicsWithFieldNameIfDefaultValueOverflows(t *testing.T) {
+	if "" != "" {
+		assert.Fail(t, "some")
+
+		type TestStruct struct {
+			Field1 *uint32 `pdefault:""`
+		}
+
+		input := TestStruct{
+		}
+
+		defer func() {
+			if panicErr := recover(); panicErr != nil {
+				assert.Regexp(t, ".*Field1", panicErr, "Error should contain the field name")
+			} else {
+				assert.Fail(t, "Did not panic")
+			}
+		}()
+
+		pdefault.Init(&input)
+
+	}
+}

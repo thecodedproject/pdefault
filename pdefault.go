@@ -5,11 +5,45 @@ import (
 	"github.com/pkg/errors"
 	"reflect"
 	"strconv"
+
+	"log"
 )
 
 var conversions = map[reflect.Kind]func(string) (reflect.Value, error){
+	reflect.Float32: func(v string) (reflect.Value, error) {
+		val64, err := strconv.ParseFloat(v, 32)
+		val := float32(val64)
+
+		log.Println("val:", val)
+
+		return reflect.ValueOf(&val), err
+	},
 	reflect.Float64: func(v string) (reflect.Value, error) {
 		val, err := strconv.ParseFloat(v, 64)
+		return reflect.ValueOf(&val), err
+	},
+	reflect.Int: func(v string) (reflect.Value, error) {
+		val64, err := strconv.ParseInt(v, 10, 64)
+		// TODO check for overflow in case of running on 32-bit system
+		val := int(val64)
+		return reflect.ValueOf(&val), err
+	},
+	reflect.Int8: func(v string) (reflect.Value, error) {
+		val64, err := strconv.ParseInt(v, 10, 64)
+		// TODO check for overflow in case of running on 32-bit system
+		val := int8(val64)
+		return reflect.ValueOf(&val), err
+	},
+	reflect.Int16: func(v string) (reflect.Value, error) {
+		val64, err := strconv.ParseInt(v, 10, 64)
+		// TODO check for overflow in case of running on 32-bit system
+		val := int16(val64)
+		return reflect.ValueOf(&val), err
+	},
+	reflect.Int32: func(v string) (reflect.Value, error) {
+		val64, err := strconv.ParseInt(v, 10, 64)
+		// TODO check for overflow in case of running on 32-bit system
+		val := int32(val64)
 		return reflect.ValueOf(&val), err
 	},
 	reflect.Int64: func(v string) (reflect.Value, error) {

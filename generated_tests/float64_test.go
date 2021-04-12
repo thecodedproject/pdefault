@@ -177,3 +177,27 @@ func Test_Float64_PdefaultTagOnNotPointerFieldPanics(t *testing.T) {
 
 	pdefault.Init(&input)
 }
+
+func Test_Float64_PanicsWithFieldNameIfDefaultValueOverflows(t *testing.T) {
+	if "" != "" {
+		assert.Fail(t, "some")
+
+		type TestStruct struct {
+			Field1 *float64 `pdefault:""`
+		}
+
+		input := TestStruct{
+		}
+
+		defer func() {
+			if panicErr := recover(); panicErr != nil {
+				assert.Regexp(t, ".*Field1", panicErr, "Error should contain the field name")
+			} else {
+				assert.Fail(t, "Did not panic")
+			}
+		}()
+
+		pdefault.Init(&input)
+
+	}
+}

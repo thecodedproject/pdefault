@@ -21,7 +21,18 @@ var testCases = []struct{
 	TagValue2 string // A valid pdefault tag - e.g. 20
 	Literal2 string // Literal value equal to TagValue2 - e.g. int64(20)
 	Literal3 string // Literal value not equal to TagValues 1 or 2 - e.g. int64(30)
+	OverflowValue string // Tag value which will overflow this type - if blank overflow tests will not run
 }{
+	{
+		Name: "Float32",
+		Type: "float32",
+		TagValue1: "1.1",
+		Literal1: "float32(1.1)",
+		TagValue2: "2.2",
+		Literal2: "float32(2.2)",
+		Literal3: "float32(3.3)",
+		OverflowValue: "1e50",
+	},
 	{
 		Name: "Float64",
 		Type: "float64",
@@ -30,6 +41,42 @@ var testCases = []struct{
 		TagValue2: "2.2",
 		Literal2: "float64(2.2)",
 		Literal3: "float64(3.3)",
+	},
+	{
+		Name: "Int",
+		Type: "int",
+		TagValue1: "10",
+		Literal1: "int(10)",
+		TagValue2: "-20",
+		Literal2: "int(-20)",
+		Literal3: "int(30)",
+	},
+	{
+		Name: "Int8",
+		Type: "int8",
+		TagValue1: "10",
+		Literal1: "int8(10)",
+		TagValue2: "-20",
+		Literal2: "int8(-20)",
+		Literal3: "int8(30)",
+	},
+	{
+		Name: "Int16",
+		Type: "int16",
+		TagValue1: "10",
+		Literal1: "int16(10)",
+		TagValue2: "-20",
+		Literal2: "int16(-20)",
+		Literal3: "int16(30)",
+	},
+	{
+		Name: "Int32",
+		Type: "int32",
+		TagValue1: "10",
+		Literal1: "int32(10)",
+		TagValue2: "-20",
+		Literal2: "int32(-20)",
+		Literal3: "int32(30)",
 	},
 	{
 		Name: "Int64",
@@ -295,5 +342,29 @@ func Test_{{.Name}}_PdefaultTagOnNotPointerFieldPanics(t *testing.T) {
 	}()
 
 	pdefault.Init(&input)
+}
+
+func Test_{{.Name}}_PanicsWithFieldNameIfDefaultValueOverflows(t *testing.T) {
+	if "{{.OverflowValue}}" != "" {
+		assert.Fail(t, "some")
+
+		type TestStruct struct {
+			Field1 *{{.Type}} ` + "`pdefault:\"{{.OverflowValue}}\"`" + `
+		}
+
+		input := TestStruct{
+		}
+
+		defer func() {
+			if panicErr := recover(); panicErr != nil {
+				assert.Regexp(t, ".*Field1", panicErr, "Error should contain the field name")
+			} else {
+				assert.Fail(t, "Did not panic")
+			}
+		}()
+
+		pdefault.Init(&input)
+
+	}
 }
 `
